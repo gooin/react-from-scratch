@@ -1,10 +1,26 @@
-import React, { useState } from './lib/react';
-import ReactDOM from './lib/ReactDOM';
+import React, { useEffect, useState } from './lib/react';
+import ReactDOM from './lib/react-dom';
+
+const useCustomHook = ():[number,(arg:number)=>void] => {
+    const [count, setCount] = useState(100);
+
+    useEffect(() => {
+        console.log('useEffect in useCustomHook', count);
+    }, [count]);
+
+    return [count,setCount]
+
+};
 
 const App = () => {
 
     const [name, setName] = useState('zhangsan');
     const [count, setCount] = useState(0);
+    const [c1, setC1] = useCustomHook();
+
+    useEffect(() => {
+        console.log('useEffect in APP');
+    }, [c1,count]);
 
     return (
         <div id={'react-from-scratch'} className={'container'} something={'shuffle'}>
@@ -17,6 +33,9 @@ const App = () => {
             <h1>count: {count}</h1>
             <button onclick={()=>setCount(count+1)}>+</button>
             <button onclick={()=>setCount(count-1)}>-</button>
+            <h1>c1: {c1}</h1>
+            <button onclick={()=>setC1(c1+1)}>+</button>
+            <button onclick={()=>setC1(c1-1)}>-</button>
         </div>
     );
 };

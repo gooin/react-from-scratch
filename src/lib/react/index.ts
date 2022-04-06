@@ -34,6 +34,22 @@ export const useState = <T>(initialState: T): [T, (newState: T) => void] => {
     return [states[CURR_CURSOR], setState];
 };
 
+export const useEffect = (fn: () => void, deps: any[]) => {
+    let prevDeps = states[CURSOR];
+    let isChanged = true;
+
+    if (prevDeps) {
+        isChanged = prevDeps.some((d, i) => !Object.is(d, deps[i]));
+    }
+
+    if (isChanged) {
+        fn();
+    }
+
+    states[CURSOR] = deps;
+    CURSOR++;
+};
+
 export default {
     createElement,
 };
